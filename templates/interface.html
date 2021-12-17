@@ -1,0 +1,1248 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" content="text/html; charset=iso-8859-1" />
+<title>Web Interface</title>
+	<link href="https://steamstore-a.akamaihd.net/public/shared/css/motiva_sans.css?v=FAK4O46_mOLB&amp;l=english" rel="stylesheet" type="text/css" >
+<link href="https://steamstore-a.akamaihd.net/public/shared/css/shared_global.css?v=S1TAP5-hzwa6&amp;l=english" rel="stylesheet" type="text/css" >
+<link href="https://steamstore-a.akamaihd.net/public/shared/css/buttons.css?v=6uRURryOh96m&amp;l=english" rel="stylesheet" type="text/css" >
+<link href="https://steamstore-a.akamaihd.net/public/css/v6/store.css?v=ZI_5VEPYpykL&amp;l=english" rel="stylesheet" type="text/css" >
+	<link href="https://steamstore-a.akamaihd.net/public/css/styles_stats.css?v=qe8sHDn9d1So&amp;l=english" rel="stylesheet" type="text/css" >
+				<script>
+				(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+						(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+					m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+				})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+				ga('create', 'UA-33786258-1', 'auto', {
+					'sampleRate': 0.4				});
+				ga('set', 'dimension1', false );
+				ga('set', 'dimension2', 'External' );
+				ga('set', 'dimension3', 'stats' );
+				ga('set', 'dimension4', "stats\/content" );
+				ga('send', 'pageview' );
+
+			</script>
+			<script type="text/javascript" src="https://steamstore-a.akamaihd.net/public/shared/javascript/jquery-1.8.3.min.js?v=.TZ2NKhB-nliU" ></script>
+<script type="text/javascript">$J = jQuery.noConflict();</script><script type="text/javascript" src="https://steamstore-a.akamaihd.net/public/shared/javascript/tooltip.js?v=.vG8yiuBTGwkE" ></script>
+
+<script type="text/javascript" src="https://steamstore-a.akamaihd.net/public/shared/javascript/shared_global.js?v=IVesYsKDr4bQ&amp;l=english" ></script>
+
+<script type="text/javascript" src="https://steamstore-a.akamaihd.net/public/javascript/main.js?v=KqfoDIrzNBSa&amp;l=english" ></script>
+
+<script type="text/javascript" src="https://steamstore-a.akamaihd.net/public/javascript/prototype-1.7.js?v=.a38iP7Khdmyy" ></script>
+
+<script type="text/javascript" src="https://steamstore-a.akamaihd.net/public/javascript/scriptaculous/_combined.js?v=Me1IBxzktiwk&amp;l=english&amp;load=effects,controls,slider" ></script>
+
+<script type="text/javascript" src="https://steamstore-a.akamaihd.net/public/javascript/dynamicstore.js?v=2iCFkTwZgNS8&amp;l=english" ></script>
+
+
+		<script type="text/javascript">
+			document.addEventListener('DOMContentLoaded', function(event) { 
+				$J.data( document, 'x_readytime', new Date().getTime() ); 
+				$J.data( document, 'x_oldref', GetNavCookie() ); 
+				SetupTooltips( { tooltipCSSClass: 'store_tooltip'} ); 
+		});
+		</script>	<script type="text/javascript" src="https://steamstore-a.akamaihd.net/public/javascript/hwsurvey.js?v=.WRBgjORrw0nK" ></script>
+	<script type="text/javascript" src="https://steamstore-a.akamaihd.net/public/shared/javascript/flot-0.8/jquery.flot.js?v=.zrJjtPpGflQQ" ></script>
+	<script type="text/javascript" src="https://steamstore-a.akamaihd.net/public/shared/javascript/flot-0.8/jquery.flot.stack.js?v=.Gd0qoVY2NdXc" ></script>
+	<script type="text/javascript" src="https://steamstore-a.akamaihd.net/public/shared/javascript/flot-0.8/jquery.flot.resize.js?v=.TWn5-WgQL6_C" ></script>
+	<script type="text/javascript" src="https://steamstore-a.akamaihd.net/public/shared/javascript/flot-0.8/excanvas.js?v=.9q965-2pfjNq" ></script>
+	<script type="text/javascript" src="https://steamstore-a.akamaihd.net/public/javascript/d3.v3.min.js?v=.SrJBgiZ580ji" ></script>
+	<script type="text/javascript" src="https://steamstore-a.akamaihd.net/public/javascript/topojson.v1.min.js?v=.Nk4NuLjWkCyw" ></script>
+<script language="javascript">
+
+	jQuery(function()
+	{
+		jQuery("<div class='chartooltip' id='charttooltip'></div>").css({
+			position: "absolute",
+			border: "1px solid #ffdddd",
+			display: "none",
+			padding: "2px",
+			"background-color": "white",
+			color: "black",
+			"font-size": "10px",
+			opacity: "1.0",
+		}).appendTo("body");
+	});
+
+function addEvent(el, ev, fn, useCapture)
+{
+	if(el.addEventListener)
+	{
+		el.addEventListener(ev, fn, useCapture);
+	}
+	else if(el.attachEvent)
+	{
+		var ret = el.attachEvent("on"+ev, fn);
+		return ret;
+	}
+	else
+	{
+		el["on"+ev] = fn;
+	}
+}
+function toggleDetailStats()
+{
+	thediv = document.getElementById("detailStats");
+	if(thediv.style.display == "block")
+	{
+		thediv.style.display = "none";
+	}
+	else
+	{
+		thediv.style.display = "block";
+	}
+}
+function checkToggleState()
+{
+	qs = location.search.substring(1, location.search.length);
+	if ( qs.indexOf( 'details=1' ) != -1 )
+	{
+		toggleDetailStats();
+	}
+}
+addEvent(window, "load", checkToggleState, false);
+</script>
+
+	<style type="text/css">
+
+		svg:not(:root) { overflow: hidden; }
+
+div.statsTop {
+	width:auto;
+	text-align:center;
+}
+
+
+.statsTop table {
+	margin-left:15px;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-size:16px;
+	font-weight:normal;
+	color:#787878;
+}
+.statsTop td {
+	padding-top:2px;
+	padding-bottom:3px;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-size:11px;
+}
+.statsTopHi {
+	font-weight:bold;
+}
+.statsTopSmall {
+	font-size:11px;
+}
+TABLE.statusGraph {
+	cell-spacing:0px;
+	cell-padding:0px;
+	height:4px;
+	margin:4px 0px 0px 0px;
+}
+TD.CurrentLoad {
+	background:#8BB9E0;
+	height:4px;
+}
+TD.AvailableBytesPerSecond {
+	background:#5B5B5B;
+}
+a#detailLink{
+	color:#8BB9E0;
+	font-size:13px;
+}
+.capsule {
+	width:611px;
+	margin-bottom:8px;
+	padding-top:14px;
+}
+.capsule a,.capsule a:visited, .capsule a:hover {
+	color:#8BB9E0;
+}
+a.filter_link, a:visited.filter_link {
+	color:#5B5B5B;
+}
+.capsuleRegionName {
+	font-size:14px;
+	font-weight:bold;
+	padding-bottom:4px;
+	padding-top:5px;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+}
+.capsule_table td {
+	font-size:11px;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+}
+a.filter_link, a.filter_link:visited {
+	color:#5B5B5B;
+}
+.leftCol_4 > P { 
+	color:#C5CAB6;
+	font-family:Verdana,Arial,Helvetica,sans-serif;
+	font-size:1.1em;
+	font-weight:normal;
+	line-height:1.4em;
+	margin:10px 20px 15px 25px;
+	padding:0;
+	text-align:left;
+	text-decoration:none;
+}
+
+.statsOverview table td a {
+	font-size: 12px;
+}
+
+.background {
+	fill: #444;
+	pointer-events: all;
+}
+
+.pick-data {
+
+	cursor: pointer;
+	color: #aaa;
+}
+
+.pick-data-current {
+
+	cursor: pointer;
+	color: #b4da45;
+}
+
+.pick-data:hover {
+	color: white;
+
+}
+
+.pick-view {
+	cursor: pointer;
+	color: #aaa
+}
+
+.pick-view-current {
+	pointer-events:none;
+	color: white;
+}
+
+
+.land {
+	fill: #222;
+}
+
+path {
+	fill: #222;
+	stroke: #aaa;
+	stroke-width: .2px;
+}
+
+.hidden { display: none; }
+.unhidden { display: block; }
+
+.loading {
+	position: absolute;
+	left: 20px;
+	top: 20px;
+}
+
+</style>
+	
+</head>
+
+<body  class="v6">
+	
+<!-- Header -->
+
+<div id="global_header">
+	<div class="content">
+		<div class="logo">
+			<span id="logo_holder">
+									<a href="">
+						<img src="Text-Based-Logo-14.jpg" width="176" height="44">
+					</a>
+							</span>
+			
+		</div>
+
+			<div class="supernav_container">
+	<a class="menuitem supernav" href="" data-tooltip-type="selector" data-tooltip-content=".submenu_store">
+		DASHBOARD		</a>
+	<div class="submenu_store" style="display: none;" data-submenuid="store">
+		<a class="submenuitem" href="">User Details</a>
+		<a class="submenuitem" href="">Graphical Analysis</a>
+		<a class="submenuitem" href="">News</a>
+		<a class="submenuitem" href="">Stats</a>
+			</div>
+
+
+	<a class="menuitem supernav" style="display: block" href="" data-tooltip-type="selector" data-tooltip-content=".submenu_community">
+			</a>
+	<div class="submenu_community" style="display: none;" data-submenuid="community">
+		<a class="submenuitem" href="">Home</a>
+		<a class="submenuitem" href="">Discussions</a>
+		<a class="submenuitem" href="">Workshop</a>
+		<a class="submenuitem" href="">Market</a>
+		<a class="submenuitem" href="">Broadcasts</a>
+							</div>
+		<a class="menuitem" href="">
+				ABOUT			</a>
+			
+	<a class="menuitem" href="">
+		SUPPORT	</a>
+	</div>
+	<script type="text/javascript">
+		jQuery(function($) {
+			$('#global_header .supernav').v_tooltip({'location':'bottom', 'destroyWhenDone': false, 'tooltipClass': 'supernav_content', 'offsetY':-4, 'offsetX': 1, 'horizontalSnap': 4, 'tooltipParent': '#global_header .supernav_container', 'correctForScreenSize': false});
+		});
+	</script>
+	<script src="/socket.io/socket.io.js"></script>
+<script>
+  var socket = io('http://localhost');
+  socket.on('news', function (data) {
+    console.log(data);
+    socket.emit('my other event', { my: 'data' });
+  });
+</script>
+
+		<div id="global_actions">
+			<div id="global_action_menu">
+									
+				
+				
+														<a class="global_action_link" href="">filters</a>
+					&nbsp;|&nbsp;
+					<span class="pulldown global_action_link" id="language_pulldown" onclick="ShowMenu( this, 'language_dropdown', 'right' );">language</span>
+					<div class="popup_block_new" id="language_dropdown" style="display: none;">
+						<div class="popup_body popup_menu">
+																																	<a class="popup_menu_item tight" href="?l=schinese" onclick="ChangeLanguage( 'schinese' ); return false;">简体中文 (Simplified Chinese)</a>
+																										<a class="popup_menu_item tight" href="?l=tchinese" onclick="ChangeLanguage( 'tchinese' ); return false;">繁體中文 (Traditional Chinese)</a>
+																										<a class="popup_menu_item tight" href="?l=japanese" onclick="ChangeLanguage( 'japanese' ); return false;">日本語 (Japanese)</a>
+																										<a class="popup_menu_item tight" href="?l=koreana" onclick="ChangeLanguage( 'koreana' ); return false;">한국어 (Korean)</a>
+																										<a class="popup_menu_item tight" href="?l=thai" onclick="ChangeLanguage( 'thai' ); return false;">ไทย (Thai)</a>
+																										<a class="popup_menu_item tight" href="?l=bulgarian" onclick="ChangeLanguage( 'bulgarian' ); return false;">Български (Bulgarian)</a>
+																										<a class="popup_menu_item tight" href="?l=czech" onclick="ChangeLanguage( 'czech' ); return false;">Čeština (Czech)</a>
+																										<a class="popup_menu_item tight" href="?l=danish" onclick="ChangeLanguage( 'danish' ); return false;">Dansk (Danish)</a>
+																										<a class="popup_menu_item tight" href="?l=german" onclick="ChangeLanguage( 'german' ); return false;">Deutsch (German)</a>
+																																			<a class="popup_menu_item tight" href="?l=spanish" onclick="ChangeLanguage( 'spanish' ); return false;">Español - España (Spanish - Spain)</a>
+																										<a class="popup_menu_item tight" href="?l=latam" onclick="ChangeLanguage( 'latam' ); return false;">Español - Latinoamérica (Spanish - Latin America)</a>
+																										<a class="popup_menu_item tight" href="?l=greek" onclick="ChangeLanguage( 'greek' ); return false;">Ελληνικά (Greek)</a>
+																										<a class="popup_menu_item tight" href="?l=french" onclick="ChangeLanguage( 'french' ); return false;">Français (French)</a>
+																										<a class="popup_menu_item tight" href="?l=italian" onclick="ChangeLanguage( 'italian' ); return false;">Italiano (Italian)</a>
+																										<a class="popup_menu_item tight" href="?l=hungarian" onclick="ChangeLanguage( 'hungarian' ); return false;">Magyar (Hungarian)</a>
+																										<a class="popup_menu_item tight" href="?l=dutch" onclick="ChangeLanguage( 'dutch' ); return false;">Nederlands (Dutch)</a>
+																										<a class="popup_menu_item tight" href="?l=norwegian" onclick="ChangeLanguage( 'norwegian' ); return false;">Norsk (Norwegian)</a>
+																										<a class="popup_menu_item tight" href="?l=polish" onclick="ChangeLanguage( 'polish' ); return false;">Polski (Polish)</a>
+																										<a class="popup_menu_item tight" href="?l=portuguese" onclick="ChangeLanguage( 'portuguese' ); return false;">Português (Portuguese)</a>
+																										<a class="popup_menu_item tight" href="?l=brazilian" onclick="ChangeLanguage( 'brazilian' ); return false;">Português - Brasil (Portuguese - Brazil)</a>
+																										<a class="popup_menu_item tight" href="?l=romanian" onclick="ChangeLanguage( 'romanian' ); return false;">Română (Romanian)</a>
+																										<a class="popup_menu_item tight" href="?l=russian" onclick="ChangeLanguage( 'russian' ); return false;">Русский (Russian)</a>
+																										<a class="popup_menu_item tight" href="?l=finnish" onclick="ChangeLanguage( 'finnish' ); return false;">Suomi (Finnish)</a>
+																										<a class="popup_menu_item tight" href="?l=swedish" onclick="ChangeLanguage( 'swedish' ); return false;">Svenska (Swedish)</a>
+																										<a class="popup_menu_item tight" href="?l=turkish" onclick="ChangeLanguage( 'turkish' ); return false;">Türkçe (Turkish)</a>
+																										<a class="popup_menu_item tight" href="?l=vietnamese" onclick="ChangeLanguage( 'vietnamese' ); return false;">Tiếng Việt (Vietnamese)</a>
+																										<a class="popup_menu_item tight" href="?l=ukrainian" onclick="ChangeLanguage( 'ukrainian' ); return false;">Українська (Ukrainian)</a>
+																						<a class="popup_menu_item tight" href="http://translation.steampowered.com" target="_blank">Help us translate Steam</a>
+						</div>
+					</div>
+							</div>
+														<a class="global_action_link" href="">logout</a>
+					</div>
+			</div>
+</div>
+
+<div class="page_header_ctn search">
+
+
+		<div id="store_header" class="">
+		<div class="content">
+			<div id="store_controls">
+				<div id="cart_status_data">
+																					<div class="store_header_btn_green store_header_btn" id="store_header_cart_btn" style="display: none;">
+							<div class="store_header_btn_caps store_header_btn_leftcap"></div>
+							<div class="store_header_btn_caps store_header_btn_rightcap"></div>
+							<a id="cart_link" class="store_header_btn_content" href="https://store.steampowered.com/cart/?snr=1_stats_content__12">
+								Cart								(<span id="cart_item_count_value">0</span>)
+							</a>
+						</div>
+									</div>
+			</div>
+							<div id="store_nav_area">
+					<div class="store_nav_leftcap"></div>
+					<div class="store_nav_bg">
+						<div class="store_nav">
+
+													<div class="tab  flyout_tab " id="foryou_tab" data-flyout="foryou_flyout" data-flyout-align="left" data-flyout-valign="bottom" onmouseover="EnsureStoreMenuTagsLoaded( '#foryou_yourtags' );">
+								<span class="pulldown">
+									<a class="pulldown_desktop" href="https://store.steampowered.com/?snr=1_stats_content__12">Searches</a>
+									<span></span>
+								</span>
+							</div>
+							<div class="popup_block_new flyout_tab_flyout responsive_slidedown" id="foryou_flyout" style="display: none;">
+								<div class="popup_body popup_menu">
+									<a class="popup_menu_item" href="">
+										Sample									</a>
+									<div class="hr"></div>
+									<a class="popup_menu_item" href="">
+										Sample									</a>
+									<a class="popup_menu_item" href="">
+										Sample									</a>
+									<a class="popup_menu_item" href="">
+										Sample									</a>
+								</div>
+							</div>
+						
+
+															<div class="tab  flyout_tab " id="genre_tab" data-flyout="genre_flyout" data-flyout-align="left" data-flyout-valign="bottom">
+									<span class="pulldown">
+										<a class="pulldown_desktop" href="">Alarms</a>
+										<a class="pulldown_mobile" href="#">Alarms</a>
+										<span></span>
+									</span>
+								</div>
+								<div class="popup_block_new flyout_tab_flyout responsive_slidedown" id="genre_flyout" style="display: none;">
+									<div class="popup_body popup_menu">
+													<a class="popup_menu_item" href="https://store.steampowered.com/genre/Free%20to%20Play/?snr=1_stats_content__12">
+													Sample												</a>																																																																																																																																																																																														com/genre/Early%20Access/?snr=1_stats_content__12">
+													Sample												</a>															
+							<a class="popup_menu_item" href="https://store.steampowered.com/demos/?snr=1_stats_content__12">
+											<span>Demos</span>
+										</a>
+																					
+										
+									</div>
+								</div>											
+                            <a class="tab  " href="">
+								<span>Cases</span>
+							</a>
+							<a class="tab  " href="">
+								<span>Logs</span>
+							</a>
+							<a class="tab  " href="">
+								<span>News</span>
+							</a>
+                            <a class="tab  " href="">
+                                <span>Report
+								</span>
+                            </a>
+
+							<div class="search_area">
+								<div id="store_search">
+									<form id="searchform" name="searchform" method="get" action="" onsubmit="return SearchSuggestCheckTerm(this);">
+										<input type="hidden" name="snr" value="1_stats_content__12" >
+										<div class="searchbox">
+											<input id="store_nav_search_term" name="term" type="text" class="default" placeholder="Search" size="22" autocomplete="off">
+											<a href="#" id="store_search_link" onclick="var $Form = $J(this).parents('form'); $Form.submit(); return false;"><img src="https://steamstore-a.akamaihd.net/public/images/blank.gif"></a>
+										</div>
+									</form>
+								</div>
+								<div id="searchterm_options" class="search_suggest popup_block_new" style="display: none;">
+									<div class="popup_body" style="border-top: none;">
+										<div id="search_suggestion_contents">
+										</div>
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</div>
+					<div class="store_nav_rightcap"></div>
+				</div>
+					</div>
+	</div>
+				<script type="text/javascript">
+			$J( function() {
+				BindAutoFlyoutEvents();
+
+				var $Window = $J(window);
+				var $Header = $J('#store_header');
+				var $ResponsiveNavCtn = $J('#responsive_store_nav_ctn');
+				var $HeaderWrapper;
+				$Window.on('Responsive_SmallScreenModeToggled.StoreMenu', function() {
+					var bUseSmallScreenMode =window.UseSmallScreenMode && window.UseSmallScreenMode();
+
+					if ( !$HeaderWrapper )
+						$HeaderWrapper = $Header.wrap( $J('<div/>', {'class': 'responsive_store_nav_ctn_spacer'} ) ).parent();
+
+					if ( bUseSmallScreenMode )
+						$ResponsiveNavCtn.append( $Header );
+					else
+						$HeaderWrapper.append( $Header );
+
+
+					if ( bUseSmallScreenMode )
+					{
+						$Header.css( 'visibility', 'hidden' );
+						$Header.show();
+						var nMenuHeight = $J('#store_header' ).height() + $J('#store_header' ).offset().top;
+						if ( $Window.scrollTop() < nMenuHeight )
+							$Window.scrollTop( nMenuHeight - GetResponsiveHeaderFixedOffsetAdjustment() );
+
+						$Header.css('visibility', 'visible');
+					}
+				} ).trigger('Responsive_SmallScreenModeToggled.StoreMenu');
+
+									if( $J('#searchform').length > 0 )
+					{
+						var g_rgUserPreferences = {
+							excluded_tags : [],
+							excluded_content_descriptors : [3,4]						};
+						EnableSearchSuggestions( $J('#searchform')[0].elements['term'], '1_stats_content_', 'IN', 1, 'english', g_rgUserPreferences, '7107783' );
+					}
+				
+
+			} );
+		</script>
+	<script type="text/javascript">
+	var g_AccountID = 0;
+	var g_sessionID = "9ccc65a48052b04f63d7a6e1";
+	var g_ServerTime = 1572334685;
+
+	$J( InitMiniprofileHovers );
+
+			GStoreItemData.AddNavParams({
+			__page_default: "1_stats_content_",
+			storemenu_recommendedtags: "1_stats_content__17"		});
+		GDynamicStore.Init( 0, false, "", {"primary_language":null,"secondary_languages":null,"platform_windows":null,"platform_mac":null,"platform_linux":null,"hide_adult_content_violence":null,"hide_adult_content_sex":null,"timestamp_updated":null,"hide_store_broadcast":null,"review_score_preference":null,"timestamp_content_descriptor_preferences_updated":null} );
+		GStoreItemData.SetCurrencyFormatter( function( nValueInCents, bWholeUnitsOnly ) { var fmt = function( nValueInCents, bWholeUnitsOnly ) {	var format = v_numberformat( nValueInCents / 100, bWholeUnitsOnly ? 0 : 2, ".", ",");format = format.replace( ".00", '' ); return format; };var strNegativeSymbol = '';return strNegativeSymbol + "\u20b9 " + fmt( nValueInCents, bWholeUnitsOnly );} );
+		GStoreItemData.SetCurrencyMinPriceIncrement( 100 );
+	</script>
+<div id="main" class="page_content">
+
+
+	<div id="main_content">
+		<!-- Main Content -->
+		<div class="breadcrumbs">
+			<a href="">Traffic Stats</a>
+			&gt;
+			Global Traffic Stats		</div>
+		<h2 class="pageheader">ADMIN PANEL</h2>
+		<br>
+			
+		<div class="block">
+			<div class="block_header"><div>Global Traffic Map <span id="community_activity_note"></span></div></div>
+			<div class="block_content block_content_inner">
+				<p><a id="pickCurrentViewDynamic" onclick="onToggleCurrentView()"  class="pick-view-current" >Interactive Map</a> | <a id="pickCurrentViewStatic" onclick="onToggleCurrentView()" class="pick-view">Satellite View</a></p>
+				<div id="interactiveMap" class = "unhidden" style="width: 900px; margin: 10px auto;">
+					<div id="heatmapArea" class="well" style="margin: 0px;width:900px;height:450px;cursor:pointer;position:relative;overflow:hidden">
+						<span class="loading">Loading data. . .</span>
+					</div>
+					<table>
+						<tr><td>Select Data:</td>
+							<td align="right" width="100"><a id="showTotalBytes" onclick="onToggleData('totalbytes', 'showTotalBytes')" class="pick-data-current">Total Servers</a></td>
+							<td align="right" width="150"><a id="showAvgBW"" onclick="onToggleData('avgmbps', 'showAvgBW')" class="pick-data">Server Status</a> </td>
+			
+					</table>
+					</br>
+					
+					<div id="currentRegionStatsNoData" class="hidden">
+						<h2><span id=CurrentCountryName></span></h2>
+						No Data Available.					</div>
+					<div id="currentRegionStats" class="hidden">
+						<h2><span id=CurrentCountryName></span></h2>
+						<table>
+							<tr><td>Total Servers:</td><td align="right" width="100"><span id=""></span></td></tr>
+						</table>
+						<br/>
+						<h2>DASHBOARD</h2>
+						<p class="body_text"> <span id=></span></p>
+						<br/>
+						<table id="">
+							<thead>
+								<th align="left" width="300">Id</th>
+								<th align="right" width="200">User</th>
+								<th align="right" width="200">Source</th>
+								<th align="right" width="200">Destination</th>
+								<th align="right" width="200">Protocol</th>
+								<th align="right" width="200">Time</th>
+								<th align="right" width="200">Priority</th>
+								<th align="right" width="200">Type</th>
+								<th align="right" width="200">Classification</th>
+								<th align="right" width="200">Action</th>
+							</thead>
+							<tbody></tbody>
+						</table>
+					</div>
+
+				</div>
+				<div id="staticTrafficMap" class="hidden"  style="width: 900px; margin: 10px auto;">
+					<a href=""><img src="" width=900/></a>
+					<br/><br/>				</div>
+			</div>
+		</div>
+		<div class="leftcol">
+			<div style="width:950px; height:500px; color : blue; overflow:auto;">
+			<div id="trafficMap" class="block" style="">
+				<div class="block_header"><div>Prototype <span id="community_activity_note"></span></div></div>
+				<div class="block_content block_content_inner" style="background-color: #333333;">
+			
+					
+
+						<div class="statsTop">
+							<table id="graphLegendTableHeader" style="margin-left:24px;" border="0" cellspacing="0" cellpadding="5">
+								<tr>
+									<td align="right" style="color:white; text-align: justify;" id="tab"></td>
+									
+									
+								</tr>
+								<script type="text/javascript">
+					var source = new EventSource('/listenForPushes');
+			        source.onmessage = function(event) {
+		            console.log(event.data);
+					document.getElementById("tab").innerHTML += event.data + "<br>";
+					//document.getElementById("tabe").innerHTML += event.dat + "<br>";								
+		        	}
+		        </script>
+							</table>
+							<table id="graphLegendTable" style="margin-left:24px;" border="0" cellspacing="0" cellpadding="5">
+								<tr></tr>
+							</table>
+						</div>
+					</div>
+				</div>
+	 		</div>
+	 	</div>
+		
+		<br clear="all" />
+	</div>
+	
+</div>
+</div>
+<script language="javascript">
+
+jsonpFetch = function (url, func, callback) {
+	function create() {
+		jsonpFetch[func] = function(data) {
+			callback(data);
+			delete jsonpFetch[func];
+			script.remove();
+		};
+		return 'jsonpFetch.' + func;
+	}
+
+	var cb = create();
+	var	script = d3.select('head')
+			.append('script')
+			.attr('type', 'text/javascript')
+			.attr('src', url );
+
+};
+
+var blackGreenPalette =
+{
+	highlight: "#89adba",
+	gradient:[
+		'#222222',
+		'#343926',
+		'#46502a',
+		'#58672f',
+		'#6B7e33',
+		'#7d9537',
+		'#8fac3c',
+		'#a1c340',
+		'#b4da45' ]
+};
+
+var bOverridePalette = false;
+var currentPalette = blackGreenPalette;
+
+function onTogglePalette( palette )
+{
+	bOverridePalette = true;
+	currentPalette = palette;
+	redraw();
+}
+
+var quantize_direct = d3.scale.quantize()
+	.domain( [0, 1] ) // set this later
+	.range(d3.range(9).map(function(i) {
+		return currentPalette['gradient'][i];
+	}));
+
+var width = 900,
+	height = 450,
+	scale = 144;
+
+var projection = d3.geo.equirectangular()
+	.scale(scale)
+	.translate([width / 2, (height / 2)+1])
+	.precision(.4);
+
+var path = d3.geo.path()
+	.projection(projection);
+
+var svg = d3.select("#heatmapArea").append("svg")
+	.attr("width", width)
+	.attr("height", height);
+
+var zoom = d3.behavior.zoom()
+	.translate(projection.translate())
+	.scale(projection.scale())
+	.scaleExtent([scale, 8 * scale])
+	.on("zoom", zoomed);
+
+var mapStates = d3.map();
+
+var g = svg.append("g")
+	.call(zoom);
+
+g.append("rect")
+	.attr("class", "background")
+	.attr("width", width)
+	.attr("height", height);
+
+var formatPercent = d3.format(".0%");
+var formatPercentPointOne = d3.format(".1%");
+
+
+var showUSStates = false;
+function onToggleStates()
+{
+	showUSStates = !showUSStates;
+	if ( showUSStates )
+	{
+		d3.select("#showUSStates").text("Hide US States");
+	}
+	else
+	{
+		d3.select("#showUSStates").text("Show US States");
+	}
+
+	redraw();
+}
+
+function get_country_property( rgCountryData, index, property_name, bNoTransform )
+{
+	if ( rgCountryData[index] == undefined )
+		return 0;
+
+	var countryData = rgCountryData[index];
+	if ( bNoTransform )
+		return countryData[property_name];
+	else
+		return transformData( countryData, property_name );
+}
+
+function format_bps_string( bps )
+{
+	var prefix = d3.formatPrefix(bps);
+	return d3.round( prefix.scale(bps), 1 ) + " " + prefix.symbol + "bps";
+}
+
+function format_bytes_string( bytes )
+{
+	var prefix = d3.formatPrefix(bytes);
+	return d3.round( prefix.scale(bytes), 1 ) + " " + prefix.symbol + "B";
+}
+
+var currentFormat = format_bytes_string;
+
+var currentView = "interactive";
+
+function onToggleCurrentView()
+{
+	if ( currentView == "interactive" )
+	{
+		currentView = "static";
+		d3.select("#interactiveMap").attr( "class", "hidden" );
+		d3.select("#staticTrafficMap").attr( "class", "unhidden" );
+		d3.select("#pickCurrentViewStatic").attr( "class", "pick-view-current" );
+		d3.select("#pickCurrentViewDynamic").attr( "class", "pick-view" );
+	}
+	else
+	{
+		currentView = "interactive";
+		d3.select("#interactiveMap").attr( "class", "unhidden" );
+		d3.select("#staticTrafficMap").attr( "class", "hidden" );
+		d3.select("#pickCurrentViewStatic").attr( "class", "pick-view" );
+		d3.select("#pickCurrentViewDynamic").attr( "class", "pick-view-current" );
+	}
+}
+
+var totalGlobalBytes = 0;
+
+function OnRegionClicked( name, data, asndata, id )
+{
+	d3.select("#currentRegionStatsPlaceholder").attr( "class", "hidden" );
+	d3.selectAll("#CurrentCountryName").text(name);
+
+	if ( !(id in data ) )
+	{
+		d3.select("#currentRegionStatsNoData").attr( "class", "unhidden" );
+		d3.select("#currentRegionStats").attr( "class", "hidden" );
+	}
+	else
+	{
+		d3.select("#currentRegionStatsNoData").attr( "class", "hidden" );
+		d3.select("#currentRegionStats").attr( "class", "unhidden" );
+
+		d3.select("#CurrentCountryNameASN").text(name);
+		d3.select("#regionTotalBytesTable").text( format_bytes_string( get_country_property( data, id, 'totalbytes', true ) ) );
+		d3.select("#regionAvgMbpsTable").text( format_bps_string( get_country_property( data, id, 'avgmbps', true ) ) );
+		d3.select("#regionPercentBytesTable").text( formatPercentPointOne( get_country_property( data, id, 'totalbytes', true ) / totalGlobalBytes ) );
+
+		var idForNetworks = id;
+		if ( idForNetworks.indexOf('USA-') > -1 )
+		{
+			idForNetworks = 'USA';
+			d3.select("#CurrentCountryNameASN").text('United States of America');
+		}
+
+		table = d3.select("#TopNetworksTable");
+		tbody = table.selectAll("tbody");
+		var rows = tbody.selectAll("tr")
+			.data( asnData[idForNetworks] );
+
+		rows.enter().append("tr");
+
+		rows.exit().remove();
+
+		var columns = ["asname","avgmbps"];
+
+		// create a cell in each row for each column
+		var cells = rows.selectAll("td")
+			.data(function(row) {
+				return columns.map(function(column) {
+					var value = row[column];
+					if ( column == 'avgmbps' )
+					{
+						value = format_bps_string(value * 1e6);
+					}
+					return {column: column, value: value };
+				});
+			});
+
+
+		cells.enter().append("td")
+			.attr( "width", 100 )
+			.attr( "align", function( column, i ) {
+				if ( i > 0 )
+					return "right";
+				else
+					return "left";
+			} );
+		cells.exit().remove();
+
+		cells.text(function(d) { return d.value; });
+	}
+}
+
+var trafficData;
+var asnData;
+
+jsonpFetch( "https://steamcdn-a.akamaihd.net/steam/publicstats/download_traffic_per_country.jsonp?v=10-29-2019-07", "onTrafficData", onTrafficData );
+
+jsonpFetch( "https://steamcdn-a.akamaihd.net/steam/publicstats/contentserver_bandwidth_stacked.jsonp?v=10-29-2019-07", "onCSBandwidth", onCSBandwidth );
+function onCSBandwidth( data )
+{
+	jQuery.plot( jQuery( "#chartdiv1" ), JSON.parse( data[ 'json' ] ), {
+		series: {
+			stack: true,
+			lines: {
+				show: true,
+				fill: 1,
+				steps: false,
+				lineWidth: 0
+			},
+			bars: {
+				show: false,
+			},
+		},
+		legend: {
+			show: false
+		},
+		yaxis: {
+			show: true,
+			tickFormatter: (function (d) {
+				return d.toLocaleString() + " Gbps"
+			}),
+			tickColor: '#333333',
+			autoscaleMargin: 0.15,
+			font: {
+				size: 11,
+				lineHeight: 13,
+				style: "normal",
+				weight: "normal",
+				family: "Verdana, Arial, Helvetica, sans-serif",
+				variant: "normal",
+				color: "#787878"
+			}
+		},
+		xaxis: {
+			show: false
+		},
+		grid: {
+			hoverable: true,
+			clickable: false,
+			margin: 0,
+			borderWidth: 0,
+			axisMargin: 0,
+			minBorderMargin: 0,
+			backgroundColor: '#222222'
+		}
+	});
+
+	jQuery( "#chartdiv1" ).bind("plothover", function (event, pos, item) {
+		if (item) {
+			var x = (item.datapoint[1] - item.datapoint[2]).toFixed(0);
+			var d = new Date(item.datapoint[0]);
+			jQuery("#charttooltip").html( item.series.label + ', ' + d.toLocaleString() +', ' + x + ' Gbps'  )
+				.css({top: item.pageY-30, left: item.pageX-25})
+				.fadeIn(200);
+		} else {
+			jQuery("#charttooltip").hide();
+		}
+	} );
+
+
+	// fill in the legend
+
+	d3.select("#graphLegendTotalGbps").text( format_bps_string(data['current'] * 1e6) );
+	d3.select("#graphLegendPeakGbps").text( format_bps_string(data['peak'] * 1e6) );
+
+	table = d3.select("#graphLegendTable");
+	tbody = table.selectAll("tbody");
+	var rows = tbody.selectAll("tr")
+		.data( data['legend'] );
+
+	rows.enter().append("tr");
+
+	rows.exit().remove();
+
+	var columns = ["name","cur","max"];
+
+	// create a cell in each row for each column
+	var cells = rows.selectAll("td")
+		.data(function(row) {
+			return columns.map(function(column) {
+				var value = row[column];
+				if ( column == 'cur' || column == 'max' )
+				{
+					value = format_bps_string(value * 1e6);
+				}
+				var color = row['color'];
+				return {column: column, data: value, color: color };
+			});
+		});
+
+
+	cells.enter().append("td")
+		.attr( "width", function( d ) {
+			if (d.column != 'name' )
+			{
+				return "100";
+			}
+			else
+			{
+				return "150";
+			}
+		} )
+		.style( "color", function( d, i ) {
+			if ( i != 0 )
+			{
+				return '#' + d.color;
+			}
+		})
+		.attr( "align", function( column, i ) {
+			if ( i > 0 )
+				return "right";
+			else
+				return "left";
+		} );
+		
+	cells.exit().remove();
+
+	cells.text(function(d)
+	{
+		return d.data;
+	});
+}
+
+function onTrafficData( trafficdata )
+{
+	trafficData = trafficdata;
+	totalGlobalBytes = d3.sum( d3.values(trafficData), function(d) {
+		return d['totalbytes'];
+	});
+
+	jsonpFetch( "https://steamcdn-a.akamaihd.net/steam/publicstats/top_asns_per_country.jsonp?v=10-29-2019-07", "onCountryASNData", onCountryASNData );
+}
+
+function onCountryASNData( asndata )
+{
+	asnData = asndata;
+	jsonpFetch( "https://steamstore-a.akamaihd.net/public/data/us-state-names-tsv.jsonp", "onStateNames", onStateNames );
+}
+
+function onStateNames( tsv_data )
+{
+	var data = d3.tsv.parse( tsv_data );
+
+	data.forEach( function(d) {
+		mapStates.set(d.id, {code: d.code, name: d.name });
+	});
+
+	jsonpFetch("https://steamstore-a.akamaihd.net/public/data/world-countries.jsonp", "onWorldCountries", function(world) {
+
+		feature = g.selectAll("#countries")
+			.data(world.features)
+			.enter().append("svg:path")
+			.attr("d", path)
+			.attr("id", function(d)
+			{
+				if (d.id == "USA" )
+				{
+					return "countries-USA";
+				}
+				else
+				{
+					return "countries";
+				}
+			})
+			.on("click", function(d, i)
+			{
+				OnRegionClicked( d.properties.name, trafficData, asnData, d.id );
+			})
+			.on("mouseover", function(d, i ){
+				var cur = d3.select(this);
+				var previousColor = cur.style("fill");
+				cur.attr("prevcolor", previousColor )
+					.style( "fill", currentPalette['highlight'] )
+			})
+			.on("mouseout", function(d, i){
+				var cur = d3.select(this);
+				cur.style( "fill", cur.attr("prevcolor") );
+			})
+			.attr("class", function(d)
+			{
+				if (d.id == "USA")
+					return "land";
+				else
+					return "land";
+			})
+
+		feature.append("svg:title")
+			.text(function(d) { return d.properties.name + "\n" + format_bytes_string( +get_country_property( trafficData, asnData, d.id, 'totalbytes', true ) ); });
+
+		jsonpFetch("https://steamstore-a.akamaihd.net/public/data/us.jsonp", "onUsData", function( us ) {
+
+			feature = g.selectAll("#states")
+				.data(topojson.feature(us, us.objects.states).features.filter( function(d,i){
+				// skip Puerto Rico, treating that as a country
+				return d.id != 72;
+			}) )
+				.enter()
+				.append("path")
+				.attr("class", 'land' )
+				.attr("d", path)
+				.attr("id", "states")
+				.on("click", function(d, i)
+				{
+					var name = "USA - " + mapStates.get(d.id)['name'];
+					var id = "USA-" + mapStates.get(d.id)['code'];
+					OnRegionClicked( name, trafficData, asnData, id );
+				})
+				.on("mouseover", function(d, i ){
+					var cur = d3.select(this);
+					var previousColor = cur.style("fill");
+					cur.attr("prevcolor", previousColor )
+						.style( "fill", currentPalette['highlight'] )
+				})
+				.on("mouseout", function(d, i){
+					var cur = d3.select(this);
+					cur.style( "fill", cur.attr("prevcolor") );
+				})
+
+			feature.append("svg:title")
+				.text(function(d) { return mapStates.get(d.id)['name'] + "\n" +
+					format_bytes_string( +get_country_property( trafficData, "USA-" + mapStates.get(d.id)['code'], 'totalbytes', true ) ); });
+
+			redraw();
+		});
+	});
+};
+
+var data_key = "totalbytes";
+
+function transformData( rgData, key )
+{
+	if ( key == "avgmbps" )
+		return Math.sqrt( +rgData[key] );
+	else if ( key == "totalbytes" )
+		return Math.sqrt( +rgData[key] );
+	else
+		return rgData[key];
+}
+
+function redraw()
+{
+	d3.select(".loading").attr("class", "hidden");
+	quantize_direct.range(d3.range(9).map(function(i) {
+		return currentPalette['gradient'][i];
+	}));
+
+	quantize_direct.domain( [
+		d3.min( d3.values(trafficData), function (d) {
+			if ( showUSStates && d[data_key] == trafficData["USA"][data_key] )
+			{
+				return null;
+			}
+			if ( d["totalbytes"] )
+				return transformData( d, data_key );
+			else
+				return null;
+		}),
+		d3.max( d3.values(trafficData), function (d) {
+			if ( showUSStates && d[data_key] == trafficData["USA"][data_key] )
+			{
+				return null;
+			}
+			if ( d["totalbytes"] )
+				return transformData( d, data_key );
+			else
+				return null;
+		}) ]
+	);
+
+	g.selectAll("#countries")
+		.transition()
+		.duration(500)
+		.style( "fill", function(d)
+		{
+			if ( get_country_property( trafficData, d.id, "totalbytes" ) )
+				return quantize_direct( get_country_property( trafficData, d.id, data_key ) )
+			else
+				return "#000";
+		})
+		.selectAll("title")
+		.text( function(d) { return d.properties.name + "\n" + currentFormat( +get_country_property( trafficData, d.id, data_key, true ) ); });
+
+	if ( showUSStates )
+	{
+		g.selectAll("#states")
+			.transition()
+			.duration(500)
+			.style( "fill", function(d)
+			{
+				if ( get_country_property( trafficData, "USA-" + mapStates.get(d.id)['code'], "totalbytes" ) )
+					return quantize_direct( get_country_property( trafficData, "USA-" + mapStates.get(d.id)['code'], data_key ) )
+				else
+					return "#000";
+			})
+			.attr("visibility", "visible")
+			.selectAll("title").text( function(d) { return mapStates.get(d.id)['name'] + "\n" +
+				currentFormat( +get_country_property( trafficData, "USA-" + mapStates.get(d.id)['code'], data_key, true ) ); });
+
+		g.selectAll("#countries-USA").attr("visibility", "hidden");
+	}
+	else
+	{
+		g.selectAll("#countries-USA")
+			.transition()
+			.duration(500)
+			.style( "fill", function(d)
+			{
+				if ( get_country_property( trafficData, d.id, "totalbytes" ) )
+					return quantize_direct( get_country_property( trafficData, d.id, data_key ) )
+				else
+					return "#000";
+			})
+			.attr("visibility", "visible")
+			.selectAll("title")
+			.text( function(d) { return d.properties.name + "\n" + currentFormat( +get_country_property( trafficData, d.id, data_key, true ) ); });
+
+		g.selectAll("#states").attr("visibility", "hidden");
+	}
+}
+
+function onToggleData( key, id )
+{
+	data_key = key;
+
+	d3.selectAll(".pick-data-current")
+		.attr("class", "pick-data");
+	d3.selectAll("#"+id)
+		.attr("class", "pick-data-current" );
+
+	if ( key == "avgmbps" )
+		currentFormat = format_bps_string;
+	else if ( key == "totalbytes" )
+		currentFormat = format_bytes_string;
+	else if ( key == "pct_cdn" )
+		currentFormat = formatPercent;
+	else
+		currentFormat = function(d){return d;}
+
+	redraw();
+}
+
+d3.select(self.frameElement).style("height", height + "px");
+
+
+function zoomed()
+{
+	var s = d3.event.scale;
+	var max_x_trans = width / 2 * ( 1 + ( ( s / scale ) - 1 ) );
+	var min_x_trans = width / 2 * ( 1 - ( ( s / scale ) - 1 ) );
+	var max_y_trans = height / 2 * ( 1 + ( ( s / scale ) - 1 ) );
+	var min_y_trans = height / 2 * ( 1 - ( ( s / scale ) - 1 ) );
+
+	var x_trans = ( d3.event.translate[0] > max_x_trans )
+		? max_x_trans
+		: ( ( d3.event.translate[0] < min_x_trans )
+		? min_x_trans
+		: d3.event.translate[0] );
+	var y_trans = ( d3.event.translate[1] > max_y_trans )
+		? max_y_trans
+		: ( ( d3.event.translate[1] < min_y_trans )
+		? min_y_trans
+		: d3.event.translate[1] );
+
+	zoom.translate([ x_trans, y_trans ]);
+
+	projection.translate([ x_trans, y_trans ]).scale(d3.event.scale);
+	g.selectAll("path").attr("d", path);
+}
+
+
+</script>
+  
+
+<!-- Footer -->
+<div id="footer_spacer" class="small_footer"></div>
+<div id="footer"  class="small_footer">
+<div class="footer_content">
+
+    <div class="rule"></div>
+				<div id="footer_logo_steam"><img src="Text-Based-Logo-14.png" alt="Demo Software" border="0" /></div>
+	
+    <div id="footer_logo"><a href="" target="_blank" rel="noreferrer"><img src="Text-Based-Logo-14.png" alt="Demo Software" border="0" /></a></div>
+    <div id="footer_text">
+        <div>&copy; 2020 Demo Corporation.  All rights reserved.  All trademarks are property of their respective owners.</div>
+    
+
+            <a href="" target="_blank" rel="noreferrer">Privacy Policy</a>
+            &nbsp; | &nbsp;
+            <a href="" target="_blank" rel="noreferrer">Legal</a>
+         
+          
+
+        </div>
+					
+
+
+
+    <div style="clear: left;"></div>
+	<br>
+
+    <div class="rule"></div>
+
+    <div class="valve_links">
+        <a href="http://www.valvesoftware.com/about.html" target="_blank" rel="noreferrer">About</a>
+
+    </div>
+
+
+</div>
+</div><!-- End Footer -->
+
+</body>
+</html>
